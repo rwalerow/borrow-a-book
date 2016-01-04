@@ -1,3 +1,4 @@
+import play.sbt.PlayImport.PlayKeys.playRunHooks
 import sbt.project
 
 name := "bororow-a-book"
@@ -22,5 +23,4 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
-
-fork in run := true
+playRunHooks <+= baseDirectory.map(base => RunSubProcess("gulp", base))
