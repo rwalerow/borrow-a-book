@@ -14,6 +14,8 @@ libraryDependencies ++= Seq(
   specs2 % Test,
   "com.typesafe.play" %% "play-slick" % "1.1.1",
   "com.ticketfly" %% "play-liquibase" % "1.0",
+  "org.webjars" %% "webjars-play" % "2.4.0-1",
+  "org.webjars.bower" % "materialize" % "0.97.3",
   "org.postgresql" % "postgresql" % "9.4.1207"
 )
 
