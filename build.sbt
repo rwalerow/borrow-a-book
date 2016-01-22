@@ -19,7 +19,10 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4.1207"
 )
 
-resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
+resolvers ++= Seq(
+  "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases",
+  "sonatype-snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
+)
 
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
