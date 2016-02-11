@@ -1,6 +1,7 @@
-package model.users
+package models.users.daos
 
 import java.sql.Timestamp
+
 import slick.driver.PostgresDriver.api._
 
 /**
@@ -81,6 +82,7 @@ object UsersDefinitions {
 
 		def * = (id, hasher, password, salt, loginInfoId, createdAt) <> (PasswordInfo.tupled, PasswordInfo.unapply)
 	}
+
 	/**
 		* Queries
 		*/
