@@ -18,10 +18,12 @@ scalaVersion := "2.11.6"
 libraryDependencies ++= Seq(
   cache,
   ws,
-  specs2 % Test,
   "com.typesafe.play" %% "play-slick" % "1.1.1",
   "org.webjars" %% "webjars-play" % "2.4.0-1",
   "org.webjars.bower" % "materialize" % "0.97.3",
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+  "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
+  "joda-time" % "joda-time" % "2.9.2",
   "org.postgresql" % "postgresql" % "9.4.1207"
 )
 
