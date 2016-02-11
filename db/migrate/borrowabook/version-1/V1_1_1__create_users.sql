@@ -15,8 +15,8 @@ create table borrowabook.login_infos(
 
 create table borrowabook.user_login_infos(
     id bigserial,
-    user_id bigint,
-    login_info_id bigint,
+    user_id bigint not null,
+    login_info_id bigint not null,
     constraint pk_user_login_infos primary key(id),
     foreign key (user_id) references borrowabook.users(id),
     foreign key (login_info_id) references borrowabook.login_infos(id)
@@ -26,8 +26,8 @@ create table borrowabook.password_infos (
     id bigserial,
     hasher varchar not null,
     password varchar(256) not null,
-    salt varchar(256),
-    login_info_id bigint,
+    salt varchar(256) not null,
+    login_info_id bigint not null,
     created_at timestamp not null,
     constraint pk_passwords primary key(id),
     foreign key (login_info_id) references borrowabook.login_infos(id)
