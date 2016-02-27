@@ -33,5 +33,5 @@ create table borrowabook.password_infos (
     foreign key (login_info_id) references borrowabook.login_infos(id)
 );
 
-insert into borrowabook.users(user_name, email, created_at) values('rwalerow','rwalerow@home.pl', now());
+insert into borrowabook.users(user_name, email, created_at) values('admin','admin@home.pl', now());
 insert into borrowabook.login_infos(provider_id, provider_key) values ('mybook', '13rfdt34tgfaswe5234');
