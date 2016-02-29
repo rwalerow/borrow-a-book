@@ -8,7 +8,9 @@ import sbt.Keys.baseDirectory
 name := "bororow-a-book"
 version := "1.0-SNAPSHOT"
 
-val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
+lazy val configFile = scala.util.Properties.propOrElse("config.file", "conf/application.conf")
+
+lazy val conf = ConfigFactory.parseFile(new File(configFile)).resolve()
 
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala)
