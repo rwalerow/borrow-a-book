@@ -3,10 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /materialize                controllers.Application.materializeDemo
-GET			/registration.html					controllers.Application.materializeDemo
+GET		/								controllers.Application.index
+GET		/materialize					controllers.Application.materializeDemo
+GET		/registration.html				controllers.Application.registrationGet
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
+GET		/assets/*file					controllers.Assets.versioned(path="/public", file: Asset)
+GET		/webjars/*file					controllers.WebJarAssets.at(file)
