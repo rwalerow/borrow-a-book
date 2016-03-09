@@ -20,3 +20,9 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-mocha" % "1.1.0")
 addSbtPlugin("org.flywaydb" % "flyway-sbt" % "3.2.1")
 
 resolvers += "Flyway" at "http://flywaydb.org/repo"
+
+// provides server side compilation of typescript to ecmascript 5 or 3
+addSbtPlugin("name.de-vries" % "sbt-typescript" % "0.2.2")
+
+// checks your typescript code for error prone constructions
+addSbtPlugin("name.de-vries" % "sbt-tslint" % "0.9.3")
