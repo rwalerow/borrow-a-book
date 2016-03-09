@@ -82,4 +82,4 @@ flywaySchemas   := Seq("borrowabook")
 typingsFile := Some(baseDirectory.value / "typings" / "browser.d.ts")
 
 
-fork in run := true
+fork in run := false
