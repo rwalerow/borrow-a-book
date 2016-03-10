@@ -34,7 +34,7 @@ libraryDependencies ++= Seq(
 	"org.webjars.bower" % "materialize" % "0.97.3",
 
 	//angular2 dependencies
-	"org.webjars.npm" % "angular2" % "2.0.0-beta.7",
+	"org.webjars.npm" % "angular2" % "2.0.0-beta.8",
 	"org.webjars.npm" % "systemjs" % "0.19.20",
 	"org.webjars.npm" % "rxjs" % "5.0.0-beta.2",
 	"org.webjars.npm" % "es6-promise" % "3.0.2",
