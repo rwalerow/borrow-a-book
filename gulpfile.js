@@ -17,7 +17,7 @@ gulp.task('compile', ['clean'], function () {
     .pipe(gulp.dest('public/javascripts/app'));
 });
 
-gulp.task('libs', function () {
+gulp.task('libs-js', function () {
     return gulp.src([
           "node_modules/angular2/bundles/angular2.dev.js",
           "node_modules/angular2/bundles/angular2-polyfills.min.js",
@@ -25,9 +25,17 @@ gulp.task('libs', function () {
           "node_modules/es6-module-loader/dist/es6-module-loader.js",
           "node_modules/systemjs/dist/system.js",
           "node_modules/es6-shim/es6-shim.js",
-          "node_modules/rxjs/Rx.js"
+          "node_modules/rxjs/Rx.js",
+          "node_modules/materialize-css/dist/js/materialize.js"
         ])
       .pipe(gulp.dest('public/javascripts/lib'));
+});
+
+gulp.task('libs-css', function(){
+	return gulp.src([
+		"node_modules/materialize-css/dist/css/materialize.css"
+	])
+	.pipe(gulp.dest("public/stylesheets"));
 });
 
 
@@ -46,6 +54,6 @@ gulp.task('ts', function(done) {
   return tsResult.js.pipe(gulp.dest('public/javascripts'));
 });
 
-gulp.task('front-dev', ['libs', 'ts'])
+gulp.task('front-dev', ['libs-js', 'libs-css', 'ts'])
 gulp.task('build', ['compile']);
 gulp.task('default', ['build']);
