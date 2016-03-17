@@ -26,7 +26,9 @@ gulp.task('libs-js', function () {
           "node_modules/systemjs/dist/system.js",
           "node_modules/es6-shim/es6-shim.js",
           "node_modules/rxjs/Rx.js",
-          "node_modules/materialize-css/dist/js/materialize.js"
+          "node_modules/typescript/lib/typescript.js",
+          "node_modules/materialize-css/dist/js/materialize.js",
+          "node_modules/requirejs/require.js"
         ])
       .pipe(gulp.dest('public/javascripts/lib'));
 });
