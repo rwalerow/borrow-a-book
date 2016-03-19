@@ -9,13 +9,15 @@
         <link rel='stylesheet' media="screen" href='@routes.Assets.versioned("stylesheets/materialize.css")'>
         <link rel="shortcut icon" type="image/png" href='@routes.Assets.versioned("images/favicon.png")'>
 		<script src='@routes.Assets.versioned("javascripts/lib/es6-shim.js")'></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.20/system-polyfills.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.20/system-polyfills.js"></script>-->
 		<script src='@routes.Assets.versioned("javascripts/lib/angular2-polyfills.js")'></script>
-		<script src='@routes.Assets.versioned("javascripts/lib/system.js")'></script>
 		<script src='@routes.Assets.versioned("javascripts/lib/es6-module-loader.js")'></script>
 		<script src='@routes.Assets.versioned("javascripts/lib/typescript.js")'></script>
-		<script src='@routes.Assets.versioned("javascripts/lib/angular2.dev.js")'></script>
 		<script src='@routes.Assets.versioned("javascripts/lib/require.js")'></script>
+		<script src='@routes.Assets.versioned("javascripts/lib/browser.js")'></script>
+		<script src='@routes.Assets.versioned("javascripts/lib/angular2.dev.js")'></script>
+		<script src='@routes.Assets.versioned("javascripts/lib/core.js")'></script>
+		<script src='@routes.Assets.versioned("javascripts/lib/system.js")'></script>
 	</head>
     <body>
 		<script>
@@ -24,7 +26,7 @@
 			typescriptOptions: { emitDecoratorMetadata: true },
 			packages: {'assets/javascripts': {defaultExtension: 'ts'}}
 		  });
-		  System.import('assets/javascripts/app/first')
+		  System.import('assets/javascripts/app/components/first')
 				.then(null, console.error.bind(console));
 		</script>
         <my-app></my-app>

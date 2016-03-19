@@ -21,6 +21,8 @@ gulp.task('libs-js', function () {
     return gulp.src([
           "node_modules/angular2/bundles/angular2.dev.js",
           "node_modules/angular2/bundles/angular2-polyfills.min.js",
+          "node_modules/angular2/core.js",
+          "node_modules/angular2/platform/browser.js",
           "node_modules/traceur/bin/traceur-runtime.js",
           "node_modules/es6-module-loader/dist/es6-module-loader.js",
           "node_modules/systemjs/dist/system.js",
