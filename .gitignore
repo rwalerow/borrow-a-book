@@ -8,4 +8,5 @@ target
 /RUNNING_PID
 /.sbtserver
 /node_modules
-public
+public/javascripts/app
+public/javascripts/lib
