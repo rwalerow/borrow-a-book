@@ -1,20 +1,31 @@
-const gulp = require('gulp');
-const del = require('del');
-const ts = require('gulp-typescript');
-const tscConfig = require('./tsconfig.json');
+var gulp = require('gulp');
+var sourcemaps = require('gulp-sourcemaps');
+var tsc = require('gulp-typescript');
+var tslint = require('gulp-tslint');
+var tsProject = tsc.createProject('tsconfig.json');
+var config = require('./gulp.config')();
 
+gulp.task('ts-lint', function() {
+    return gulp.src(config.allTs)
+        .pipe(tslint())
+        .pipe(tslint.report('prose', {
+            emitError: false
+        }));
+})
 
-// clean the contents of the distribution directory
-gulp.task('clean', function () {
-  return del('dist/**/*');
-});
+gulp.task('compile-ts', function() {
+    var sourceTsFiles = [
+        config.allTs
+    ];
 
-// TypeScript compile
-gulp.task('compile', ['clean'], function () {
-  return gulp
-    .src('app/assets/app/**/*.ts')
-    .pipe(typescript(tscConfig))
-    .pipe(gulp.dest('public/javascripts/app'));
+    var tsResult = gulp
+        .src(sourceTsFiles)
+        .pipe(sourcemaps.init())
+        .pipe(tsc(tsProject));
+
+    return tsResult.js
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.tsOutputPath));
 });
 
 gulp.task('libs-js', function () {
@@ -42,22 +53,3 @@ gulp.task('libs-css', function(){
 	.pipe(gulp.dest("public/stylesheets"));
 });
 
-
-gulp.task('ts', function(done) {
-  var tsResult = gulp.src([
-      "node_modules/angular2/core.d.ts",
-      "node_modules/angular2/common.d.ts",
-      "node_modules/angular2/http.d.ts",
-      "node_modules/angular2/router.d.ts",
-      "node_modules/rxjs/Rx.d.ts",
-      "node_modules/angular2/typings/es6-collections/es6-collections.d.ts",
-      "node_modules/angular2/typings/es6-promise/es6-promise.d.ts",
-      "app/assets/app/**/*.ts"
-    ])
-    .pipe(ts(tscConfig), undefined, ts.reporter.fullReporter());
-  return tsResult.js.pipe(gulp.dest('public/javascripts'));
-});
-
-gulp.task('front-dev', ['libs-js', 'libs-css', 'ts'])
-gulp.task('build', ['compile']);
-gulp.task('default', ['build']);

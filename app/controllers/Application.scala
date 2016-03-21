@@ -1,5 +1,7 @@
 package controllers
 
+import java.io.File
+
 import play.api.mvc._
 
 class Application extends Controller {
@@ -14,5 +16,9 @@ class Application extends Controller {
 
 	def registrationGet = Action {
 		Ok(views.html.users.registration())
+	}
+
+	def node(file: String) = Action {
+		Ok.sendFile(content = new File("node_modules/" + file), inline = true)
 	}
 }
