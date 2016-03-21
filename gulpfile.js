@@ -19,7 +19,7 @@ gulp.task('compile-ts', function() {
     ];
 
     var tsResult = gulp
-        .src(sourceTsFiles)
+        .src(sourceTsFiles.concat(config.tsMappings))
         .pipe(sourcemaps.init())
         .pipe(tsc(tsProject));
 
