@@ -53,3 +53,6 @@ gulp.task('libs-css', function(){
 	.pipe(gulp.dest("public/stylesheets"));
 });
 
+gulp.task('serve-front', ['libs-js', 'ts-lint', 'compile-ts'], function(){
+	gulp.watch([config.allTs], ['ts-lint', 'compile-ts'])
+});
