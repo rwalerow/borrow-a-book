@@ -1,10 +1,7 @@
-import {Component} from "angular2/core";
-import {bootstrap} from "angular2/platform/browser";
+import {Component} from 'angular2/core';
 
 @Component({
-    selector: "my-app",
-    template: "<h1>O shit</h1>"
+    selector: 'my-app',
+    template: '<h1>Hello world Asia 5</h1>'
 })
 export default class AppComponent { }
-
-bootstrap(AppComponent);
