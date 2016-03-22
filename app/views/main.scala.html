@@ -3,33 +3,14 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href='@routes.Assets.versioned("stylesheets/main.css")'>
-        <link rel='stylesheet' media="screen" href='@routes.Assets.versioned("stylesheets/materialize.css")'>
-        <link rel="shortcut icon" type="image/png" href='@routes.Assets.versioned("images/favicon.png")'>
-		<script src='@routes.Assets.versioned("javascripts/lib/es6-shim.js")'></script>
-		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.20/system-polyfills.js"></script>-->
-		<script src='@routes.Assets.versioned("javascripts/lib/angular2-polyfills.js")'></script>
-		<!--<script src='@routes.Assets.versioned("javascripts/lib/es6-module-loader.js")'></script>-->
-		<!--<script src='@routes.Assets.versioned("javascripts/lib/typescript.js")'></script>-->
-		<script src='@routes.Assets.versioned("javascripts/lib/require.js")'></script>
-		<script src='@routes.Assets.versioned("javascripts/lib/angular2.dev.js")'></script>
-		<script src='@routes.Assets.versioned("javascripts/lib/system.js")'></script>
-		<script>
-		  System.config({
-			defaultJSExtensions: true,
-			map: {
-			  "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt",
-			  "angular2": "node_modules/angular2",
-			  "rxjs": "node_modules/rxjs"
-			}
-		  });
-		  System.import('assets/javascripts/app/boot').then(null, console.error.bind(console));
-		</script>
+	<head>
+		<title>@title</title>
+		<link rel="stylesheet" media="screen" href='@routes.Assets.versioned("stylesheets/main.css")'>
+		<link rel="shortcut icon" type="image/png" href='@routes.Assets.versioned("images/favicon.png")'>
+		@utils.basicScripts()
 	</head>
-    <body>
-        <my-app>Load...</my-app>
-        @content
-    </body>
+	<body>
+		@utils.navigation()
+		@content
+	</body>
 </html>
