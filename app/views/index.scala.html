@@ -1,17 +1,6 @@
 @(message: String)
 
 @main("Welcome to Play") {
-    <script>
-    System.config({
-		defaultJSExtensions: true,
-		map: {
-			"angular2-jwt": "node_modules/angular2-jwt/angular2-jwt",
-			"angular2": "node_modules/angular2",
-			"rxjs": "node_modules/rxjs"
-		}
-    });
-    System.import('assets/javascripts/app/boot').then(null, console.error.bind(console));
-	</script>
-
+	@angular2.bootstrap("assets/javascripts/app/boot")
 	<my-app>Loading...</my-app>
 }

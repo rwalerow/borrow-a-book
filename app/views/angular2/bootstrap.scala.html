@@ -1,14 +1,13 @@
-<script>    @* javascript is async downloaded by SystemJs *@
+@(bootFile: String)
+
+<script>
 	System.config({
-		packages: {
-			'assets/app': {
-				defaultExtension: 'js'
-			},
-			'assets/lib': {
-				defaultExtension: 'js'
-			}
+		defaultJSExtensions: true,
+		map: {
+			"angular2-jwt": "node_modules/angular2-jwt/angular2-jwt",
+			"angular2": "node_modules/angular2",
+			"rxjs": "node_modules/rxjs"
 		}
 	});
-	System.import('assets/javascripts/app/bootstrap')
-		.then(null, console.error.bind(console));
+	System.import('@bootFile').then(null, console.error.bind(console));
 </script>
