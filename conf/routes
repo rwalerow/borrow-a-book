@@ -9,4 +9,4 @@ GET		/users/registration.html		controllers.users.RegistrationController.get
 
 # Map static resources from the /public folder to the /assets URL path
 GET		/assets/*file					controllers.Assets.versioned(path="/public", file: Asset)
-GET		/node_modules/*file				@controllers.general.AssetsController.serveNodeFiles(file)
+GET		/node_modules/*file				controllers.general.AssetsController.serveNodeFiles(file)
