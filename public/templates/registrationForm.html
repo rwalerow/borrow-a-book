@@ -1,21 +1,21 @@
-<form action="/users/register.html" method="post">
+<form ngNoForm action="/users/register.html">
   <div class="row input-field">
-    <input id="userName" type="text" class="validate"/>
-    <label for="userName"> Login </label>
+    <input id="userName" type="text" class="validate" [(ngModel)]="model.login" required/>
+    <label for="userName" [ngClass]="{ active: notEmpty(model.login) }"> Login </label>
   </div>
   <div class="row input-field">
-    <input id="email" type="text" />
-    <label for="email"> Email </label>
+    <input id="email" type="text" [(ngModel)]="model.email" required/>
+    <label for="email" [ngClass]="{ active: notEmpty(model.email) }"> Email </label>
   </div>
   <div class="row input-field">
-    <input id="password" type="password" />
-    <label for="password"> Password </label>
+    <input id="password" type="password" [(ngModel)]="model.password" required/>
+    <label for="password" [ngClass]="{active: notEmpty(model.password)}"> Password </label>
   </div>
   <div class="row input-field">
-    <input id="password_confir" type="password" />
-    <label for="password_confir"> Password Confirmation </label>
+    <input id="password_confir" type="password" [(ngModel)]="model.passwordConfirmation" required/>
+    <label for="password_confir" [ngClass]="{active: notEmpty(model.passwordConfirmation)}"> Password Confirmation </label>
   </div>
-  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+  <button class="btn waves-effect waves-light" type="submit">Submit
     <i class="material-icons right">send</i>
   </button>
 </form>
