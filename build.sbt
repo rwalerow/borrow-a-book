@@ -51,5 +51,4 @@ flywayPassword  := conf.getString("slick.dbs.default.db.password")
 flywayLocations := Seq("filesystem:" + Paths.get(baseDirectory.value.absolutePath,"db","migrate").toString)
 flywaySchemas   := Seq("borrowabook")
 
-
 fork in run := false

@@ -1,7 +1,8 @@
+@()(implicit messages: Messages, lang: play.api.i18n.Lang)
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Strona główna</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">@Messages("main.page")</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="@controllers.users.routes.RegistrationController.get()">Rejestracja</a></li>
+            <li><a href="@controllers.users.routes.RegistrationController.get()">@Messages("navigation.registration")</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
