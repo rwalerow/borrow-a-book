@@ -6,18 +6,18 @@
     "gulp-typescript": "^2.10.0"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.9",
+    "angular2": "2.0.0-beta.12",
     "angular2-jwt": "0.1.8",
     "cors": "2.7.1",
-    "materialize-css": "0.97.5",
     "es6-promise": "3.1.2",
-    "es6-shim": "^0.33.3",
+    "es6-shim": "^0.35.0",
     "express": "4.13.4",
     "express-jwt": "3.3.0",
+    "jquery": "2.2.2",
+    "materialize-css": "0.97.5",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
     "systemjs": "0.19.24",
-    "zone.js": "0.5.15",
-    "jquery" : "2.2.2"
+    "zone.js": "0.6.6"
   }
 }
