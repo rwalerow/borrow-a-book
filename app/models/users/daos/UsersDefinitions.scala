@@ -84,9 +84,8 @@ object UsersDefinitions {
 	}
 
 	/**
-		* Queries
-		*/
-
+	* Queries
+	*/
 	lazy val users = TableQuery[Users]
 	lazy val loginInfos = TableQuery[LoginInfos]
 	lazy val userLoginInfos = TableQuery[UserLoginInfos]

@@ -24,7 +24,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
   "joda-time" % "joda-time" % "2.9.2",
-  "org.postgresql" % "postgresql" % "9.4.1207"
+  "org.postgresql" % "postgresql" % "9.4.1207",
+  "org.scalaz" %% "scalaz-core" % "7.2.2"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

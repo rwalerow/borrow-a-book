@@ -1,18 +1,18 @@
-<form ngNoForm action="/users/register.html">
+<form ngNoForm action="/users/registration.html" method="post">
   <div class="row input-field">
-    <input id="userName" type="text" class="validate" [(ngModel)]="model.login" required/>
+    <input name="userName" type="text" class="validate" [(ngModel)]="model.login" required/>
     <label for="userName" [ngClass]="{ active: notEmpty(model.login) }"> Login </label>
   </div>
   <div class="row input-field">
-    <input id="email" type="text" [(ngModel)]="model.email" required/>
+    <input name="email" type="text" [(ngModel)]="model.email" required/>
     <label for="email" [ngClass]="{ active: notEmpty(model.email) }"> Email </label>
   </div>
   <div class="row input-field">
-    <input id="password" type="password" [(ngModel)]="model.password" required/>
+    <input name="password" type="password" [(ngModel)]="model.password" required/>
     <label for="password" [ngClass]="{active: notEmpty(model.password)}"> Password </label>
   </div>
   <div class="row input-field">
-    <input id="password_confir" type="password" [(ngModel)]="model.passwordConfirmation" required/>
+    <input name="password_confir" type="password" [(ngModel)]="model.passwordConfirmation" required/>
     <label for="password_confir" [ngClass]="{active: notEmpty(model.passwordConfirmation)}"> Password Confirmation </label>
   </div>
   <button class="btn waves-effect waves-light" type="submit">Submit
