@@ -21,6 +21,7 @@ object UserForms {
 
 	val login_minimal_length = 4
 	val password_minimal_length = 5
+	val email_regexp = """\b[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\b""".r
 
 	val registrationform = Form(
 		mapping(
@@ -45,8 +46,9 @@ object RegistrationForm {
 		(
 			validateNonBlankFields(registrationForm) |@|
 			validateFieldMinimalLength(registrationForm) |@|
+			isEmailValidForm(registrationForm.email) |@|
 			isPasswordTheSame(registrationForm.password, registrationForm.passwordConfirmation)
-		) {	(_, _, _) => registrationForm	}
+		){	(_, _, _, _) => registrationForm }
 	}
 
 	def validateNonBlankFields(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
@@ -69,7 +71,7 @@ object RegistrationForm {
 		(
 			isValidLength(registrationForm.login, UserForms.login_filed_name, UserForms.login_minimal_length) |@|
 			isValidLength(registrationForm.password, UserForms.password_filed_name, UserForms.password_minimal_length)
-		) { (_, _) => registrationForm }
+		){ (_, _) => registrationForm }
 	}
 
 	def isValidLength(value: String, fieldName: String, minimalLength: Int): ValidationNel[ValidationError, String] = {
@@ -84,6 +86,13 @@ object RegistrationForm {
 			ValidationError(UserForms.registration_form_error, "validation.error.passwords.are.different").failureNel
 		else
 			password.successNel
+	}
+
+	def isEmailValidForm(email: String) : ValidationNel[ValidationError, String] = {
+		if(UserForms.email_regexp.unapplySeq(email).isDefined)
+			email.successNel
+		else
+			ValidationError(UserForms.email_filed_name, "validation.error.invalid.email").failureNel
 	}
 
 	def isLoginUnique(login: String): Future[ValidationNel[String, String]] = {

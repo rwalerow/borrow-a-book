@@ -1,7 +1,7 @@
 package controllers.users
 
 import com.google.inject.Inject
-import models.users.UserForms
+import models.users.{RegistrationForm, UserForms}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, Controller}
@@ -25,6 +25,7 @@ class RegistrationController @Inject() (val messagesApi: MessagesApi) extends Co
 			},
 			data => {
 				Logger.info(data.toString)
+				RegistrationForm.validate(data)
 				Ok(views.html.users.registration())
 			}
 		)
