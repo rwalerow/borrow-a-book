@@ -17,6 +17,8 @@ object UserForms {
 	val password_filed_name = "password"
 	val password_confirmation_filed_name = "password_confir"
 
+	val registration_form_error = "form"
+
 	val login_minimal_length = 4
 	val password_minimal_length = 5
 
@@ -42,10 +44,9 @@ object RegistrationForm {
 	def validate(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
 		(
 			validateNonBlankFields(registrationForm) |@|
-			validateFieldMinimalLength(registrationForm)
-		) {
-			(_, _) => registrationForm
-		}
+			validateFieldMinimalLength(registrationForm) |@|
+			isPasswordTheSame(registrationForm.password, registrationForm.passwordConfirmation)
+		) {	(_, _, _) => registrationForm	}
 	}
 
 	def validateNonBlankFields(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
@@ -76,7 +77,13 @@ object RegistrationForm {
 			ValidationError(fieldName, "validation.error.to.short").failureNel
 		else
 			value.successNel
+	}
 
+	def isPasswordTheSame(password: String, passwordConfirmation: String): ValidationNel[ValidationError, String] = {
+		if(!password.equals(passwordConfirmation))
+			ValidationError(UserForms.registration_form_error, "validation.error.passwords.are.different").failureNel
+		else
+			password.successNel
 	}
 
 	def isLoginUnique(login: String): Future[ValidationNel[String, String]] = {
