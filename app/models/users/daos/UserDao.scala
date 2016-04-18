@@ -8,6 +8,7 @@ import slick.driver.PostgresDriver.api._
 
 import scala.concurrent.Future
 
+
 @Singleton
 class UserDao @Inject() (val dbConfigProvider: DatabaseConfigProvider)
 	extends HasDatabaseConfigProvider[JdbcProfile] {
@@ -23,8 +24,8 @@ class UserDao @Inject() (val dbConfigProvider: DatabaseConfigProvider)
 	}
 
 	def findByName(name: String): Future[Option[User]] = {
-		db.run (
-			users.filter( _.userName === name ).result.headOption
+		db.run(
+			users.filter(_.userName === name).result.headOption
 		)
 	}
 }

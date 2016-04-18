@@ -14,6 +14,6 @@ import scala.concurrent.Future
 class UserValidation @Inject() (val userDao: UserDao){
 
 //	def isNameUnique(registerForm: RegistrationForm) : Future[] = {
-//
-//	}
+	//
+	//	}
 }
