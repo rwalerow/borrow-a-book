@@ -13,12 +13,18 @@ import scalaz._
 import Scalaz._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import utils.ValidationUtils
+import utils.ValidationUtils.ValidationError
 
 import ExecutionContext.Implicits.global
 
 /**
   * Created by robert on 30.03.16.
   */
+case class RegistrationForm(login: String
+							,email: String
+							,password: String
+							,passwordConfirmation: String)
 
 object UserForms {
 
@@ -48,19 +54,12 @@ object UserForms {
 	)(unlift(ValidationError.unapply))
 }
 
-case class RegistrationForm(login: String
-	,email: String
-	,password: String
-	,passwordConfirmation: String)
-
-case class ValidationError(field: String, errorCode: String)
-
 @Singleton
 class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def validate(registrationForm: RegistrationForm): Future[ValidationNel[ValidationError, RegistrationForm]] = {
 		for {
-			standard <- Future(validateStandard(registrationForm))
+			standard <- Future.successful(validateStandard(registrationForm))
 			async <- isLoginUnique(registrationForm.login)
 		} yield (standard |@| async){(_,_) => registrationForm }
 	}
@@ -76,18 +75,11 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def validateNonBlankFields(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
 		(
-			isStringNonEmpty(registrationForm.login, UserForms.login_filed_name) |@|
-			isStringNonEmpty(registrationForm.password, UserForms.password_filed_name) |@|
-			isStringNonEmpty(registrationForm.email, UserForms.email_filed_name) |@|
-			isStringNonEmpty(registrationForm.passwordConfirmation, UserForms.password_confirmation_filed_name)
+			ValidationUtils.isStringNonEmpty(registrationForm.login, UserForms.login_filed_name) |@|
+			ValidationUtils.isStringNonEmpty(registrationForm.password, UserForms.password_filed_name) |@|
+			ValidationUtils.isStringNonEmpty(registrationForm.email, UserForms.email_filed_name) |@|
+			ValidationUtils.isStringNonEmpty(registrationForm.passwordConfirmation, UserForms.password_confirmation_filed_name)
 		){ (_, _, _, _) => registrationForm }
-	}
-
-	def isStringNonEmpty(fieldValue: String, filedName: String): ValidationNel[ValidationError, String] = {
-		if(fieldValue.isEmpty)
-			ValidationError(filedName, "validation.error.blank").failureNel
-		else
-			fieldValue.successNel
 	}
 
 	def validateFieldMinimalLength(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
@@ -120,9 +112,9 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def isLoginUnique(login: String): Future[ValidationNel[ValidationError, String]] = {
 		userService.countByName(login)
-			.map(result => result > 0)
-			.map(gtZero => {
-				if(gtZero)
+			.map(result => result <= 0)
+			.map(leZero => {
+				if(leZero)
 					login.successNel
 				else
 					ValidationError(UserForms.login_filed_name, "validation.error.login.already.exists").failureNel

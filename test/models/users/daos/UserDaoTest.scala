@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 
 class UserDaoTest extends PlayDbSpec with OptionValues {
 
-	val userDao : UserDao = app.injector.instanceOf(classOf[UserDao])
+	val userDao: UserDao = app.injector.instanceOf(classOf[UserDao])
 
 	"UserDao" should {
 		val result = Await.result(userDao.countUsers, 1 second)
