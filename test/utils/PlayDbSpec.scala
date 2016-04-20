@@ -10,7 +10,7 @@ import slick.driver.JdbcProfile
 /**
 	* Created by robert on 08.02.16.
 	*/
-trait PlayDbSpec extends PlaySpec with OneAppPerSuite with ShouldMatchers {
+trait PlayDbSpec extends PlaySpec with OneAppPerSuite {
 
 	val conf = ConfigFactory.load
 	lazy val dbConfig = DatabaseConfigProvider.get[ JdbcProfile ]( Play.current )
