@@ -20,4 +20,10 @@ class UserService @Inject() (val dbConfigProvider: DatabaseConfigProvider)
 			users.filter(_.userName === name).countDistinct.result
 		)
 	}
+
+	def countByEmail(email: String): Future[Int] = {
+		db.run(
+			users.filter(_.email === email).countDistinct.result
+		)
+	}
 }

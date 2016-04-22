@@ -26,7 +26,7 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % "2.9.2",
   "org.postgresql" % "postgresql" % "9.4.1207",
   "org.typelevel" %% "scalaz-scalatest" % "0.3.0" % "test",
-  "org.scalaz" %% "scalaz-core" % "7.2.2"
+  "org.scalaz" %% "scalaz-core" % "7.1.4"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
@@ -54,5 +54,7 @@ flywayLocations := Seq("filesystem:" + Paths.get(baseDirectory.value.absolutePat
 flywaySchemas   := Seq("borrowabook")
 
 TwirlKeys.templateImports ++= Seq("models.users.UserForms._", "play.api.libs.json.Json")
+
+testOptions in Test += Tests.Argument("-Dconfig.file=conf/test.conf")
 
 fork in run := false

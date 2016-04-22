@@ -60,8 +60,9 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 	def validate(registrationForm: RegistrationForm): Future[ValidationNel[ValidationError, RegistrationForm]] = {
 		for {
 			standard <- Future.successful(validateStandard(registrationForm))
-			async <- isLoginUnique(registrationForm.login)
-		} yield (standard |@| async){(_,_) => registrationForm }
+			asyncLogin <- isLoginUnique(registrationForm.login)
+			asyncEmail <- isEmailUnique(registrationForm.email)
+		} yield (standard |@| asyncLogin |@| asyncEmail){(_,_,_) => registrationForm }
 	}
 
 	def validateStandard(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
@@ -103,7 +104,7 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 			password.successNel
 	}
 
-	def isEmailValidForm(email: String) : ValidationNel[ValidationError, String] = {
+	def isEmailValidForm(email: String): ValidationNel[ValidationError, String] = {
 		if(UserForms.email_regexp.unapplySeq(email).isDefined)
 			email.successNel
 		else
@@ -112,12 +113,21 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def isLoginUnique(login: String): Future[ValidationNel[ValidationError, String]] = {
 		userService.countByName(login)
-			.map(result => result <= 0)
 			.map(leZero => {
-				if(leZero)
+				if(leZero == 0)
 					login.successNel
 				else
 					ValidationError(UserForms.login_filed_name, "validation.error.login.already.exists").failureNel
 			})
+	}
+
+	def isEmailUnique(email: String): Future[ValidationNel[ValidationError, String]] = {
+		userService.countByEmail(email)
+			    .map(count => {
+					if(count == 0)
+						email.successNel
+					else
+						ValidationError(UserForms.email_filed_name, "validation.error.email.already.exists").failureNel
+				})
 	}
 }

@@ -27,11 +27,18 @@ class RegistrationValidationTest extends PlayDbSpec with OptionValues with Valid
 			validationResult.isSuccess mustEqual true
 		}
 
-		"must be ununique" in {
+		"must login be unique" in {
 			val invalidForm = RegistrationForm("admin", "kowalski@gmail.com", "password", "password")
 			val validationResult = Await.result(validatior.validate(invalidForm), 3 second)
 
-			validationResult must haveFailure (ValidationError("login", "validation.error.login.already.exists"))
+			validationResult.leftSide must haveFailure (ValidationError("userName", "validation.error.login.already.exists"))
+		}
+
+		"must email be unique" in {
+			val invalidForm = RegistrationForm("admin2", "admin@home.pl", "password", "password")
+			val validationResult = Await.result(validatior.validate(invalidForm), 3 second)
+
+			validationResult.leftSide must haveFailure (ValidationError("email", "validation.error.email.already.exists"))
 		}
 	}
 }
