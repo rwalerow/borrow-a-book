@@ -7,13 +7,22 @@ import sbt.Keys.baseDirectory
 name := "bororow-a-book"
 version := "1.0-SNAPSHOT"
 
-lazy val configFile = scala.util.Properties.propOrElse("config.file", "conf/application.conf")
 
+/**
+  * Config file gonna be loaded from property -Dconfig.file
+  *
+  * default value: conf/application.conf
+  */
+lazy val configFile = scala.util.Properties.propOrElse("config.file", "conf/application.conf")
 lazy val conf = ConfigFactory.parseFile(new File(configFile)).resolve()
+
+/**
+  * passed config to Test scope
+  */
+javaOptions in Test += "-Dconfig.file=" + configFile
 
 lazy val root = (project in file(".")).
 	enablePlugins(PlayScala)
-  enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
