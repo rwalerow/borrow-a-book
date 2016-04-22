@@ -12,21 +12,22 @@ lazy val configFile = scala.util.Properties.propOrElse("config.file", "conf/appl
 lazy val conf = ConfigFactory.parseFile(new File(configFile)).resolve()
 
 lazy val root = (project in file(".")).
+	enablePlugins(PlayScala)
   enablePlugins(PlayScala)
 
 scalaVersion := "2.11.7"
 
 //Load backend dependencies
 libraryDependencies ++= Seq(
-  cache,
-  ws,
-  "com.typesafe.play" %% "play-slick" % "1.1.1",
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test",
-  "joda-time" % "joda-time" % "2.9.2",
-  "org.postgresql" % "postgresql" % "9.4.1207",
-  "org.typelevel" %% "scalaz-scalatest" % "0.3.0" % "test",
-  "org.scalaz" %% "scalaz-core" % "7.1.4"
+	cache,
+	ws,
+	"com.typesafe.play" %% "play-slick" % "2.0.0",
+	"org.scalatest" %% "scalatest" % "2.2.1" % "test",
+	"org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test",
+	"joda-time" % "joda-time" % "2.9.2",
+	"org.postgresql" % "postgresql" % "9.4.1207",
+	"org.typelevel" %% "scalaz-scalatest" % "0.3.0" % "test",
+	"org.scalaz" %% "scalaz-core" % "7.1.4"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
@@ -37,24 +38,20 @@ routesGenerator := InjectedRoutesGenerator
 
 
 /**
-  *
   * Flyway db Configuration
   *
   * We want to configuration to be the same as slick
-  *
   */
 seq(flywaySettings: _*)
 
 flywayBaselineOnMigrate := true
 
-flywayUrl       := conf.getString("slick.dbs.default.db.url")
-flywayUser      := conf.getString("slick.dbs.default.db.user")
-flywayPassword  := conf.getString("slick.dbs.default.db.password")
-flywayLocations := Seq("filesystem:" + Paths.get(baseDirectory.value.absolutePath,"db","migrate").toString)
-flywaySchemas   := Seq("borrowabook")
+flywayUrl		:= conf.getString("slick.dbs.default.db.url")
+flywayUser		:= conf.getString("slick.dbs.default.db.user")
+flywayPassword	:= conf.getString("slick.dbs.default.db.password")
+flywayLocations	:= Seq("filesystem:" + Paths.get(baseDirectory.value.absolutePath,"db","migrate").toString)
+flywaySchemas	:= Seq("borrowabook")
 
 TwirlKeys.templateImports ++= Seq("models.users.UserForms._", "play.api.libs.json.Json")
-
-testOptions in Test += Tests.Argument("-Dconfig.file=conf/test.conf")
 
 fork in run := false
