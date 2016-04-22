@@ -14,7 +14,7 @@ import Scalaz._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import utils.ValidationUtils
-import utils.ValidationUtils.ValidationError
+import utils.ValidationUtils.{isValidLength, ValidationError}
 
 import ExecutionContext.Implicits.global
 
@@ -90,13 +90,6 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 		){ (_, _) => registrationForm }
 	}
 
-	def isValidLength(value: String, fieldName: String, minimalLength: Int): ValidationNel[ValidationError, String] = {
-		if(value.length > 0 && value.length < minimalLength)
-			ValidationError(fieldName, "validation.error.to.short").failureNel
-		else
-			value.successNel
-	}
-
 	def isPasswordTheSame(password: String, passwordConfirmation: String): ValidationNel[ValidationError, String] = {
 		if(!password.equals(passwordConfirmation))
 			ValidationError(UserForms.registration_form_error, "validation.error.passwords.are.different").failureNel
@@ -113,8 +106,8 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def isLoginUnique(login: String): Future[ValidationNel[ValidationError, String]] = {
 		userService.countByName(login)
-			.map(leZero => {
-				if(leZero == 0)
+			.map(count => {
+				if(count == 0)
 					login.successNel
 				else
 					ValidationError(UserForms.login_filed_name, "validation.error.login.already.exists").failureNel
@@ -123,11 +116,11 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def isEmailUnique(email: String): Future[ValidationNel[ValidationError, String]] = {
 		userService.countByEmail(email)
-			    .map(count => {
-					if(count == 0)
-						email.successNel
-					else
-						ValidationError(UserForms.email_filed_name, "validation.error.email.already.exists").failureNel
-				})
+			.map(count => {
+				if(count == 0)
+					email.successNel
+				else
+					ValidationError(UserForms.email_filed_name, "validation.error.email.already.exists").failureNel
+			})
 	}
 }

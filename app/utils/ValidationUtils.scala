@@ -17,4 +17,11 @@ object ValidationUtils {
 			fieldValue.successNel
 	}
 
+	def isValidLength(value: String, fieldName: String, minimalLength: Int): ValidationNel[ValidationError, String] = {
+		if(value.length > 0 && value.length < minimalLength)
+			ValidationError(fieldName, "validation.error.to.short").failureNel
+		else
+			value.successNel
+	}
+
 }
