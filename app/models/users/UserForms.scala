@@ -37,7 +37,7 @@ object UserForms {
 
 	val login_minimal_length = 4
 	val password_minimal_length = 5
-	val email_regexp = """\b[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\b""".r
+	val email_regexp = """(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b""".r
 
 	val registrationform = Form(
 		mapping(
