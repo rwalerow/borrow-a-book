@@ -1,8 +1,8 @@
 @(message: String)(implicit messages: Messages, lang: play.api.i18n.Lang)
 
 @main("Welcome to Play") {
-	@angular2.bootstrap("assets/javascripts/app/components/boot/bootFirst")
+	@angular2.bootstrap("bootFirst")
 
-	<my-app [example]="działa">Loading...</my-app>
+	<my-app example="dziala?" lista="[{&quot;field&quot;: &quot;userName&quot;, &quot;errorMessage&quot;: &quot;wtf test invalid name&quot;}]">Loading...</my-app>
 	@Messages("main.page")
 }

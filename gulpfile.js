@@ -26,7 +26,7 @@ gulp.task('compile-ts', function() {
     return tsResult.js
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(config.tsOutputPath));
-});
+});label:after
 
 gulp.task('libs-js', function () {
     return gulp.src([
@@ -42,7 +42,8 @@ gulp.task('libs-js', function () {
           "node_modules/typescript/lib/typescript.js",
           "node_modules/materialize-css/dist/js/materialize.js",
           "node_modules/requirejs/require.js",
-          "node_modules/jquery/dist/jquery.min.js"
+          "node_modules/jquery/dist/jquery.min.js",
+
         ])
       .pipe(gulp.dest('public/javascripts/lib'));
 });

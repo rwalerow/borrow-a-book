@@ -1,7 +1,9 @@
 <form ngNoForm action="/users/registration.html" method="post">
   <div class="row input-field">
-    <input name="userName" type="text" class="validate" [(ngModel)]="model.login" required/>
-    <label for="userName" [ngClass]="{ active: notEmpty(model.login) }"> Login </label>
+    <input name="userName" type="text" class="validate"
+    [class.invalid]="isFieldInvalid('userName')"
+    [(ngModel)]="model.login" required/>
+    <label for="userName" [ngClass]="{ active: notEmpty(model.login) }" [attr.data-error]="errorsForField('userName')"> Login </label>
   </div>
   <div class="row input-field">
     <input name="email" type="text" [(ngModel)]="model.email" required/>
@@ -15,7 +17,7 @@
     <input name="password_confir" type="password" [(ngModel)]="model.passwordConfirmation" required/>
     <label for="password_confir" [ngClass]="{active: notEmpty(model.passwordConfirmation)}"> Password Confirmation </label>
   </div>
-  <button class="btn waves-effect waves-light" type="submit">Submit
+  <button (click)="logErrors()" class="btn waves-effect waves-light" type="submit">Submit
     <i class="material-icons right">send</i>
   </button>
 </form>

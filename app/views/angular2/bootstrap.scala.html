@@ -1,5 +1,7 @@
 @(bootFile: String)
 
+@bootDir = { "/assets/javascripts/app/components/boot/" }
+
 <script>
 	System.config({
 		defaultJSExtensions: true,
@@ -9,5 +11,5 @@
 			"rxjs": "/node_modules/rxjs"
 		}
 	});
-	System.import('@bootFile').then(null, console.error.bind(console));
+	System.import(@bootDir + '@bootFile').then(null, console.error.bind(console));
 </script>
