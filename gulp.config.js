@@ -12,7 +12,8 @@ module.exports = function() {
 			"node_modules/angular2/typings/es6-promise/es6-promise.d.ts",
 			"node_modules/angular2/src/facede/collection.d.ts"
 		],
-		sassSourcePath: '/app/assets/scss/'
+		sassSourcePath: '/app/assets/scss/',
+		sassOutputPath: './public/stylesheets/'
 	};
 
 	return config;
