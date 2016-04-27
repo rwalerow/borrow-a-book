@@ -2,6 +2,7 @@ package models.users
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import custom.utils.validation.ValidationUtils
 import models.users.daos.UserDao
 import models.users.services.UserService
 import play.api.data.Form
@@ -13,8 +14,7 @@ import scalaz._
 import Scalaz._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import utils.ValidationUtils
-import utils.ValidationUtils.{isValidLength, ValidationError}
+import custom.utils.validation.ValidationUtils.{ValidationError, isValidLength}
 
 import ExecutionContext.Implicits.global
 

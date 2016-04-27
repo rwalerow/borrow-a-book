@@ -5,6 +5,9 @@ import models.users.{RegistrationForm, RegistrationFormValidation, UserForms}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, Controller}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 //import utils.ApplicationImplicits.defaultLang
 
 /**
@@ -18,16 +21,23 @@ class RegistrationController @Inject() (val messagesApi: MessagesApi, val regist
 		Ok(views.html.users.registration())
 	}
 
-	def post = Action { implicit request =>
+	def post = Action.async { implicit request =>
+
+		import scala.concurrent.ExecutionContext.Implicits.global
+
 		UserForms.registrationform.bindFromRequest.fold(
 			form => {
 				Logger.info(form.toString)
-				Ok(views.html.users.registration())
+				Future.successful(Ok(views.html.users.registration()))
 			},
 			data => {
 				Logger.info(data.toString)
-				val validation = registrationFormValidator.validate(data)
-				Ok(views.html.users.registration())
+				registrationFormValidator.validate(data).map( validationResult =>
+					validationResult.fold(
+						error => Ok(views.html.users.registration()),
+						result => Ok(views.html.index("app"))
+					)
+				);
 			}
 		)
 	}

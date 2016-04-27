@@ -1,4 +1,4 @@
-package utils
+package custom.utils
 
 import play.api.i18n.Lang
 

@@ -5,7 +5,7 @@ import play.api.mvc._
 import play.api.i18n.I18nSupport
 import play.api.i18n.MessagesApi
 
-import utils.ApplicationImplicits._
+//import utils.ApplicationImplicits._
 
 class Application @Inject() (val messagesApi: MessagesApi) extends Controller with I18nSupport {
 

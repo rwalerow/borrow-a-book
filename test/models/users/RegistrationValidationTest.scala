@@ -2,12 +2,11 @@ package models.users
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-
 import akka.stream.Materializer
 import org.scalatest.OptionValues
 import org.typelevel.scalatest.ValidationMatchers
 import utils.PlayDbSpec
-import utils.ValidationUtils.ValidationError
+import custom.utils.validation.ValidationUtils.ValidationError
 
 /**
   * Created by robert on 18.04.16.

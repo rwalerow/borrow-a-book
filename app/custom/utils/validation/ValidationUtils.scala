@@ -1,7 +1,7 @@
-package utils
+package custom.utils.validation
 
+import scalaz.Scalaz._
 import scalaz._
-import Scalaz._
 
 /**
   * Created by robert on 18.04.16.
