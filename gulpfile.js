@@ -28,7 +28,7 @@ gulp.task('compile-ts', function() {
 	return tsResult.js
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(config.tsOutputPath));
-});label:after
+});
 
 gulp.task('libs-js', function () {
     return gulp.src([
@@ -45,13 +45,14 @@ gulp.task('libs-js', function () {
 		"node_modules/materialize-css/dist/js/materialize.js",
 		"node_modules/requirejs/require.js",
 		"node_modules/jquery/dist/jquery.min.js",
+		"node_modules/immutable/dist/immutable.js"
 		])
 		.pipe(gulp.dest('public/javascripts/lib'));
 });
 
-gulp.task('compile-scss', function(){
+gulp.task('compile-sass', function(){
 	return gulp.src(config.sassSourcePath)
-		.pipe(scss().on('error', scss.logError)
+		.pipe(sass().on('error', sass.logError)
 		.pipe(gulp.dest(config.sassOutputPath)));
 });
 
@@ -62,6 +63,6 @@ gulp.task('libs-css', function(){
 	.pipe(gulp.dest("public/stylesheets"));
 });
 
-gulp.task('serve-front', ['libs-js', 'ts-lint', 'compile-ts'], 'compile-scss', function(){
-	gulp.watch([config.allTs], ['ts-lint', 'compile-ts', 'compile-scss'])
+gulp.task('serve-front', ['libs-js', 'ts-lint', 'compile-ts', 'compile-sass'], function(){
+	gulp.watch([config.allTs], ['ts-lint', 'compile-ts', 'compile-sass'])
 });

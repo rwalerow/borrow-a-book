@@ -1,6 +1,7 @@
-import {Component, ElementRef} from 'angular2/core';
-import {UserRegistration } from './userRegistrationModel';
+import { Component, ElementRef } from 'angular2/core';
+import { UserRegistration } from './userRegistrationModel';
 import { ValidationError } from '../../utils/validationUtils';
+import * as i from 'immutable';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { ValidationError } from '../../utils/validationUtils';
 })
 export default class RegistrationForm {
 
-  validationErrors: Set<ValidationError> = new Set<ValidationError>();
+  validationErrors: i.Set<ValidationError>;
   model = new UserRegistration('', '', '', '');
   submitted = false;
 
@@ -30,24 +31,16 @@ export default class RegistrationForm {
   }
 
   isFieldInvalid(fieldName: string) {
-    let response: boolean = false;
-    this.validationErrors.forEach ( error => {
-      if ( error.field === fieldName ) {
-        response = true;
-      };
-    });
-    return response;
+    return this.validationErrors
+      .filter(e => e.field === fieldName)
+      .size !== 0;
   }
 
-  errorsForField(fieldName: string) {
-    let result: string = '';
-
-    this.validationErrors.forEach ( e => {
-      if (e.field === fieldName) {
-        result = e.errorMessage;
-      }
-    });
-    return result;
+  errorsForField(fieldName: string): string {
+    return this.validationErrors
+      .filter(e => e.field === fieldName)
+      .map(e => e.errorMessage)
+      .first();
   }
 
   logErrors() {
@@ -59,8 +52,8 @@ export default class RegistrationForm {
   }
 
   private parseValidationErrors(jsonObject: any) {
-    for (let error of jsonObject) {
-      this.validationErrors.add(new ValidationError().deserialize(error));
-    }
+    this.validationErrors = i.Set(jsonObject)
+      .map(e => new ValidationError().deserialize(e))
+      .toSet();
   }
 }

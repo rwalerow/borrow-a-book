@@ -8,7 +8,10 @@
 		map: {
 			"angular2-jwt": "/node_modules/angular2-jwt/angular2-jwt",
 			"angular2": "/node_modules/angular2",
-			"rxjs": "/node_modules/rxjs"
+			"rxjs": "/node_modules/rxjs",
+		},
+		paths: {
+			"immutable": "/node_modules/immutable/dist/immutable.js"
 		}
 	});
 	System.import(@bootDir + '@bootFile').then(null, console.error.bind(console));
