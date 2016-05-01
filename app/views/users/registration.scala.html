@@ -1,14 +1,16 @@
 @import custom.utils.validation.ValidationUtils._
 
-@(error: List[ValidationError] = List())(implicit messages: Messages, lang: play.api.i18n.Lang)
+@(error: List[ValidationError] = List(ValidationError("userName", "wtf test invalid name")))(implicit messages: Messages, lang: play.api.i18n.Lang)
 
 @main("Materialize Page"){
+	<link rel='stylesheet' media="screen" href='@routes.Assets.versioned("stylesheets/users/registration.css")'>
+} {
 	<div class="section no-pad-bot" id="index-banner">
 		<div class="container">
 			<div class="row">
 				<div class="col s6 offset-s3">
 					@angular2.bootstrap("bootRegistration")
-					<registration-form validation-errors='[{"field": "userName", "errorMessage": "wtf test invalid name"}]'>Loading...</registration-form>
+					<registration-form validation-errors='@Json.toJson(error)'>Loading...</registration-form>
 				</div>
 				<div class="col s3">
 				</div>

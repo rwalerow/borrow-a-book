@@ -6,8 +6,9 @@ export class ValidationError implements Serializable<ValidationError> {
     errorMessage: string;
 
     deserialize(input): ValidationError {
+
       this.field = input.field;
-      this.errorMessage = input.errorMessage;
+      this.errorMessage = input.errorCode;
 
       return this;
     }

@@ -50,10 +50,10 @@ gulp.task('libs-js', function () {
 		.pipe(gulp.dest('public/javascripts/lib'));
 });
 
-gulp.task('compile-sass', function(){
+gulp.task('compile-sass', function () {
 	return gulp.src(config.sassSourcePath)
-		.pipe(sass().on('error', sass.logError)
-		.pipe(gulp.dest(config.sassOutputPath)));
+		.pipe(sass().on('error', sass.logError))
+		.pipe(gulp.dest(config.sassOutputPath));
 });
 
 gulp.task('libs-css', function(){
