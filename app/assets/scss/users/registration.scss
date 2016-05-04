@@ -6,7 +6,16 @@ input[type=text] + label:after, input[type=password] + label:after, input[type=e
     display: block;
     content: "";
     position: absolute;
-    top: 60px; /*Changed from 65px to 60px for better looking */
+    top: 65px; /*Changed from 65px to 60px for better looking */
     opacity: 0;
     transition: .2s opacity ease-out, .2s color ease-out;
+}
+
+label:after {
+    transition-property: all !important;
+    font-size: 0.8rem;
+    transform: none;
+}
+label:not(.active):after {
+    transform: translateY(-140%);
 }

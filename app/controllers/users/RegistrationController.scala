@@ -1,6 +1,7 @@
 package controllers.users
 
 import com.google.inject.Inject
+import custom.utils.validation.ValidationUtils.ValidationError
 import models.users.{RegistrationForm, RegistrationFormValidation, UserForms}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -18,7 +19,7 @@ class RegistrationController @Inject() (val messagesApi: MessagesApi, val regist
 
 	def get = Action {
 		Logger.info("Hello robert")
-		Ok(views.html.users.registration())
+		Ok(views.html.users.registration(List(ValidationError("userName", "wtf test invalid name"))))
 	}
 
 	def post = Action.async { implicit request =>

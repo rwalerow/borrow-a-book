@@ -1,6 +1,6 @@
 @import custom.utils.validation.ValidationUtils._
 
-@(error: List[ValidationError] = List(ValidationError("userName", "wtf test invalid name")))(implicit messages: Messages, lang: play.api.i18n.Lang)
+@(error: List[ValidationError] = List())(implicit messages: Messages, lang: play.api.i18n.Lang)
 
 @main("Materialize Page"){
 	<link rel='stylesheet' media="screen" href='@routes.Assets.versioned("stylesheets/users/registration.css")'>
