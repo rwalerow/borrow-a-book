@@ -7,56 +7,55 @@ import * as i from 'immutable';
 
 
 @Component({
-  selector: 'registration-form',
-  templateUrl: '/assets/templates/registrationForm.html',
-  directives: [FORM_DIRECTIVES]
+	selector: 'registration-form',
+	templateUrl: '/assets/templates/registrationForm.html',
+	directives: [FORM_DIRECTIVES]
 })
 export default class RegistrationForm {
 
-  validationErrors: i.Set<ValidationError>;
-  model: UserRegistration = new UserRegistration('', '', '', '');
-  registrationForm: ControlGroup;
-  submitted = false;
+	validationErrors: i.Set<ValidationError>;
+	model: UserRegistration = new UserRegistration('', '', '', '');
+	registrationForm: ControlGroup;
+	submitted = false;
 
-  constructor(elementRef: ElementRef, fb: FormBuilder) {
-      let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
-      this.parseValidationErrors(errorsFronAttribute);
-      this.registrationForm = fb.group({
-		'login': ['', Validators.compose([Validators.required, this.validateLoginMinimalSize])],
-		'email': [''],
-		'password': [''],
-		'passwordConfirm': ['', Validators.required ]
-	}, { validator: this.matchingPasswords('password', 'passwordConfirm')});
-  }
+	constructor(elementRef: ElementRef, fb: FormBuilder) {
+		let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
+		this.parseValidationErrors(errorsFronAttribute);
+		this.registrationForm = fb.group({
+			'login': ['', Validators.compose([Validators.required, this.validateLoginMinimalSize])],
+			'email': [''],
+			'password': [''],
+			'passwordConfirm': ['', Validators.required ]
+		}, { validator: this.matchingPasswords('password', 'passwordConfirm')});
+	}
 
-  onSubmit() {
-    this.submitted = true;
-  }
+	onSubmit() {
+		this.submitted = true;
+	}
 
-  notEmpty(value) {
-    if (value) {
+	notEmpty(value) {
+		if (value) {
+			return true;
+		}
+		return false;
+	}
 
-      return true;
-    }
-    return false;
-  }
+	isFormValid(): boolean {
+		return this.registrationForm.valid;
+	}
 
-  isFormValid(): boolean {
-    return this.registrationForm.valid;
-  }
+	isFieldInvalid(fieldName: string) {
+		return this.validationErrors
+			.filter(e => e.field === fieldName)
+			.size !== 0;
+	}
 
-  isFieldInvalid(fieldName: string) {
-    return this.validationErrors
-      .filter(e => e.field === fieldName)
-      .size !== 0;
-  }
-
-  errorsForField(fieldName: string): string {
-    return this.validationErrors
-      .filter(e => e.field === fieldName)
-      .map(e => e.errorMessage)
-      .first();
-  }
+	errorsForField(fieldName: string): string {
+		return this.validationErrors
+			.filter(e => e.field === fieldName)
+			.map(e => e.errorMessage)
+			.first();
+		}
 
   // Validation methods
 
@@ -65,31 +64,31 @@ export default class RegistrationForm {
 			let passwordInput = group.controls[passwordKey];
 			let passwordConfirmationInput = group.controls[passwordConfirmationKey];
 			if (passwordInput.value !== passwordConfirmationInput.value) {
-  				return passwordConfirmationInput.setErrors({notEquivalent: true})
+				return passwordConfirmationInput.setErrors({notEquivalent: true});
 			}
+		};
+	}
+
+	validateLoginMinimalSize(control: Control) {
+		if (control.value.length <= 3) {
+			return {loginToShort: true};
 		}
 	}
 
-  validateLoginMinimalSize(control: Control) {
-    if (control.value.length <= 3) {
-      return {loginToShort: true};
-    }
-  }
+	loginValidationErrors(): string {
+		let result: Set<string> = new Set<string>();
+		let loginControl = this.registrationForm.find('login');
 
-  loginValidationErrors(): string {
-    let result: Set<string> = new Set<string>();
-    let loginControl = this.registrationForm.find('login');
+		if (loginControl.hasError('required')) {
+			result.add('is required');
+		}
 
-    if (loginControl.hasError('required')) {
-      result.add('is required');
-    }
+		if (loginControl.hasError('loginToShort')) {
+			result.add('to short');
+		}
 
-    if (loginControl.hasError('loginToShort')) {
-      result.add('to short');
-    }
-
-    return 'Login is' + i.List(result).join(' and ');
-  }
+		return 'Login is' + i.List(result).join(' and ');
+	}
 
 	passwordConfirmationValidationErrors(): string {
 		let result: Set<string> = new Set<string>();
@@ -101,16 +100,16 @@ export default class RegistrationForm {
 			result.add('is not equal to password');
 		}
 
-		if(passConfControl.hasError('required')) {
+		if (passConfControl.hasError('required')) {
 			result.add('is required');
 		}
 
 		return 'Password confirmation ' + i.List(result).join(',');
-  }
+	}
 
-  private parseValidationErrors(jsonObject: any) {
-    this.validationErrors = i.Set(jsonObject)
-      .map(e => new ValidationError().deserialize(e))
-      .toSet();
-  }
+	private parseValidationErrors(jsonObject: any) {
+		this.validationErrors = i.Set(jsonObject)
+			.map(e => new ValidationError().deserialize(e))
+			.toSet();
+	}
 }
