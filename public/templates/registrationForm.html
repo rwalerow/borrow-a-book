@@ -1,28 +1,50 @@
-<form ngNoForm [ngFormModel]="registrationForm"
-  action="/users/registration.html" method="post">
-  <div class="row input-field">
-    <input name="userName" type="text"
-    [class.invalid] = "(!login.valid && login.touched) || false"
-    #login="ngForm"
-    [ngFormControl]="registrationForm.controls['login']"
-    />
-    <label for="userName"
-      [attr.data-error]="loginValidationErrors()"
-      > Login </label>
-  </div>
-  <div class="row input-field">
-    <input name="email" type="text" [(ngModel)]="model.email" required/>
-    <label for="email" [ngClass]="{ active: notEmpty(model.email) }"> Email </label>
-  </div>
-  <div class="row input-field">
-    <input name="password" type="password" [(ngModel)]="model.password" required/>
-    <label for="password" [ngClass]="{active: notEmpty(model.password)}"> Password </label>
-  </div>
-  <div class="row input-field">
-    <input name="password_confir" type="password" [(ngModel)]="model.passwordConfirmation" required/>
-    <label for="password_confir" [ngClass]="{active: notEmpty(model.passwordConfirmation)}"> Password Confirmation </label>
-  </div>
-  <button [disabled]="!registrationForm.valid" class="btn waves-effect waves-light" type="submit">Submit
-    <i class="material-icons right">send</i>
-  </button>
+<form
+	ngNoForm [ngFormModel]="registrationForm"
+	action="/users/registration.html"
+	method="post">
+
+	<div class="row input-field">
+		<input
+			name="userName"
+			type="text"
+			#login="ngForm"
+			[ngFormControl]="registrationForm.controls['login']"
+			[class.invalid] = "(!login.valid && login.touched) || false"
+		/>
+		<label for="userName"
+			[attr.data-error]="loginValidationErrors()">
+			Login*
+		</label>
+	</div>
+
+	<div class="row input-field">
+		<input name="email" type="text" [(ngModel)]="model.email" required/>
+		<label for="email" [ngClass]="{ active: notEmpty(model.email) }"> Email* </label>
+	</div>
+
+	<div class="row input-field">
+		<input name="password" type="password" [(ngModel)]="model.password" [ngFormControl]="registrationForm.controls['password']" required/>
+		<label for="password" [ngClass]="{active: notEmpty(model.password)}"> Password* </label>
+	</div>
+
+	<div class="row input-field">
+		<input
+			name="password_confirm"
+			type="password"
+			#passConfirm="ngForm"
+			[ngFormControl]="registrationForm.controls['passwordConfirm']"
+			[class.invalid] = "(!passConfirm.valid && passConfirm.touched) || false"
+		/>
+		<label
+			for="password_confirm"
+			[attr.data-error]="passwordConfirmationValidationErrors()"
+		>
+			Password Confirmation *
+		</label>
+	</div>
+
+	<button [disabled]="!registrationForm.valid" class="btn waves-effect waves-light" type="submit">Submit
+		<i class="material-icons right">send</i>
+	</button>
+
 </form>

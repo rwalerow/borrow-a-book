@@ -22,13 +22,15 @@ export default class RegistrationForm {
       let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
       this.parseValidationErrors(errorsFronAttribute);
       this.registrationForm = fb.group({
-        'login': ['', Validators.compose([Validators.required, this.loginMinimalSize])]
-      });
+		'login': ['', Validators.compose([Validators.required, this.validateLoginMinimalSize])],
+		'email': [''],
+		'password': [''],
+		'passwordConfirm': ['', Validators.required ]
+	}, { validator: this.matchingPasswords('password', 'passwordConfirm')});
   }
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.registrationForm);
   }
 
   notEmpty(value) {
@@ -40,7 +42,6 @@ export default class RegistrationForm {
   }
 
   isFormValid(): boolean {
-    console.log(this.registrationForm.valid);
     return this.registrationForm.valid;
   }
 
@@ -56,10 +57,20 @@ export default class RegistrationForm {
       .map(e => e.errorMessage)
       .first();
   }
+
   // Validation methods
-  loginMinimalSize(control: Control) {
-    console.log('control.value.size <= 3:');
-    console.log(control.value.length);
+
+	matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
+		return (group: ControlGroup) => {
+			let passwordInput = group.controls[passwordKey];
+			let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+			if (passwordInput.value !== passwordConfirmationInput.value) {
+  				return passwordConfirmationInput.setErrors({notEquivalent: true})
+			}
+		}
+	}
+
+  validateLoginMinimalSize(control: Control) {
     if (control.value.length <= 3) {
       return {loginToShort: true};
     }
@@ -73,10 +84,28 @@ export default class RegistrationForm {
       result.add('is required');
     }
 
-    if (loginControl.hasError('loginToShort'))
-    result.add(' to short');
+    if (loginControl.hasError('loginToShort')) {
+      result.add('to short');
+    }
 
-    return 'Login is' + i.List(result).join(' and');
+    return 'Login is' + i.List(result).join(' and ');
+  }
+
+	passwordConfirmationValidationErrors(): string {
+		let result: Set<string> = new Set<string>();
+		let passConfControl = this.registrationForm.find('passwordConfirm');
+
+		console.log(passConfControl);
+
+		if (passConfControl.hasError('notEquivalent')) {
+			result.add('is not equal to password');
+		}
+
+		if(passConfControl.hasError('required')) {
+			result.add('is required');
+		}
+
+		return 'Password confirmation ' + i.List(result).join(',');
   }
 
   private parseValidationErrors(jsonObject: any) {
