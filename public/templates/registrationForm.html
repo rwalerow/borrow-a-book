@@ -9,7 +9,7 @@
 			type="text"
 			#login="ngForm"
 			[ngFormControl]="registrationForm.controls['login']"
-			[class.invalid] = "(!login.valid && login.touched) || false"
+			[class.invalid]="(!login.valid && login.touched) || false"
 		/>
 		<label for="userName"
 			[attr.data-error]="loginValidationErrors()">
@@ -18,13 +18,36 @@
 	</div>
 
 	<div class="row input-field">
-		<input name="email" type="text" [(ngModel)]="model.email" required/>
-		<label for="email" [ngClass]="{ active: notEmpty(model.email) }"> Email* </label>
+		<input
+			name="email"
+			type="text"
+			#email="ngForm"
+			[(ngModel)]="model.email"
+			[ngFormControl]="registrationForm.controls['email']"
+			[class.invalid]="(!email.valid && email.touched) || false"
+		/>
+		<label
+			for="email"
+			[attr.data-error]="emailValidationErrors()"
+		>
+			Email*
+		</label>
 	</div>
 
 	<div class="row input-field">
-		<input name="password" type="password" [(ngModel)]="model.password" [ngFormControl]="registrationForm.controls['password']" required/>
-		<label for="password" [ngClass]="{active: notEmpty(model.password)}"> Password* </label>
+		<input
+			name="password"
+			type="password"
+			#password="ngForm"
+			[ngFormControl]="registrationForm.controls['password']"
+			[class.invalid]="(!password.valid && password.touched) || false"
+		/>
+		<label
+			for="password"
+			[attr.data-error]="passwordValidationErrors()"
+		>
+			Password*
+		</label>
 	</div>
 
 	<div class="row input-field">
@@ -39,7 +62,7 @@
 			for="password_confirm"
 			[attr.data-error]="passwordConfirmationValidationErrors()"
 		>
-			Password Confirmation *
+			Password Confirmation*
 		</label>
 	</div>
 
