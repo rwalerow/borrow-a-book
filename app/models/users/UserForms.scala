@@ -14,7 +14,7 @@ import scalaz._
 import Scalaz._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import custom.utils.validation.ValidationUtils.{ValidationError, isValidLength}
+import custom.utils.validation.ValidationUtils.{ValidationError, isStringNonEmpty, isValidLength}
 
 import ExecutionContext.Implicits.global
 
@@ -62,7 +62,7 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 			standard <- Future.successful(validateStandard(registrationForm))
 			asyncLogin <- isLoginUnique(registrationForm.login)
 			asyncEmail <- isEmailUnique(registrationForm.email)
-		} yield (standard |@| asyncLogin |@| asyncEmail){(_,_,_) => registrationForm }
+		} yield (standard |@| asyncLogin |@| asyncEmail){ (_,_,_) => registrationForm }
 	}
 
 	def validateStandard(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
@@ -76,10 +76,10 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 
 	def validateNonBlankFields(registrationForm: RegistrationForm): ValidationNel[ValidationError, RegistrationForm] = {
 		(
-			ValidationUtils.isStringNonEmpty(registrationForm.login, UserForms.login_filed_name) |@|
-			ValidationUtils.isStringNonEmpty(registrationForm.password, UserForms.password_filed_name) |@|
-			ValidationUtils.isStringNonEmpty(registrationForm.email, UserForms.email_filed_name) |@|
-			ValidationUtils.isStringNonEmpty(registrationForm.passwordConfirmation, UserForms.password_confirmation_filed_name)
+			isStringNonEmpty(registrationForm.login, UserForms.login_filed_name) |@|
+			isStringNonEmpty(registrationForm.password, UserForms.password_filed_name) |@|
+			isStringNonEmpty(registrationForm.email, UserForms.email_filed_name) |@|
+			isStringNonEmpty(registrationForm.passwordConfirmation, UserForms.password_confirmation_filed_name)
 		){ (_, _, _, _) => registrationForm }
 	}
 
@@ -105,22 +105,18 @@ class RegistrationFormValidation @Inject()(userService: UserService) {
 	}
 
 	def isLoginUnique(login: String): Future[ValidationNel[ValidationError, String]] = {
-		userService.countByName(login)
-			.map(count => {
-				if(count == 0)
-					login.successNel
-				else
-					ValidationError(UserForms.login_filed_name, "validation.error.login.already.exists").failureNel
+		userService.isNameUnique(login)
+			.map(unique => {
+				if(unique) login.successNel
+				else ValidationError(UserForms.login_filed_name, "validation.error.login.already.exists").failureNel
 			})
 	}
 
 	def isEmailUnique(email: String): Future[ValidationNel[ValidationError, String]] = {
-		userService.countByEmail(email)
-			.map(count => {
-				if(count == 0)
-					email.successNel
-				else
-					ValidationError(UserForms.email_filed_name, "validation.error.email.already.exists").failureNel
+		userService.isEmailUnique(email)
+		    .map(unique => {
+				if(unique) email.successNel
+				else ValidationError(UserForms.email_filed_name, "validation.error.email.already.exists").failureNel
 			})
 	}
 }
