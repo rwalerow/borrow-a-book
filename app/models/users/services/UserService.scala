@@ -16,23 +16,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class UserService @Inject() (val dbConfigProvider: DatabaseConfigProvider)
 	extends HasDatabaseConfigProvider[JdbcProfile]{
 
-	def countByName(name: String): Future[Int] = {
-		db.run(
-			users.filter(_.userName === name).countDistinct.result
-		)
-	}
-
 	def isNameUnique(name: String): Future[Boolean] = {
 		db.run(
 			users.filter(_.userName === name).countDistinct.result
 		)
 		.map(_ == 0)
-	}
-
-	def countByEmail(email: String): Future[Int] = {
-		db.run(
-			users.filter(_.email === email).countDistinct.result
-		)
 	}
 
 	def isEmailUnique(email: String): Future[Boolean] = {

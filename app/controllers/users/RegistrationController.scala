@@ -1,13 +1,13 @@
 package controllers.users
 
 import com.google.inject.Inject
-import custom.utils.validation.ValidationUtils.{respWrite, ValidUniqueResponse, ValidationError}
+import custom.utils.validation.ValidationUtils.{ValidUniqueResponse, ValidationError, respWrite}
 import models.users.services.UserService
 import models.users.{RegistrationForm, RegistrationFormValidation, UserForms}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{Json, Writes}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -49,9 +49,18 @@ class RegistrationController @Inject() (
 	}
 
 	def validateLoginUnique = Action.async { implicit request =>
-		val login = request.queryString.get("login").flatMap(_.headOption).getOrElse("admin")
-		userService.isNameUnique(login).map {
-			valid => Ok(Json.toJson(ValidUniqueResponse(valid)))
-		}
+		isUnique(request, "login", userService.isNameUnique)
+	}
+
+	def validateEmailUnique = Action.async { implicit request =>
+		isUnique(request, "email", userService.isEmailUnique)
+	}
+
+	private def isUnique(request: Request[AnyContent], field: String, isUniqueFunction: String => Future[Boolean]): Future[Result] = {
+		request.queryString.get(field)
+			.flatMap(_.headOption)
+			.map(isUniqueFunction(_))
+			.getOrElse(Future.successful(false))
+			.map(valid => Ok(Json.toJson(ValidUniqueResponse(valid))))
 	}
 }
