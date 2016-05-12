@@ -1,4 +1,4 @@
-import {bootstrap} from 'angular2/platform/browser';
+import { bootstrapStatic } from '@angular/platform-browser';
 import AppComponent from '../first';
 
-bootstrap(AppComponent);
+bootstrapStatic(AppComponent);

@@ -1,4 +1,4 @@
-import { Input, Component, ElementRef } from 'angular2/core';
+import { Input, Component, ElementRef } from '@angular/core';
 import { ValidationError } from '../utils/validationUtils';
 
 @Component({

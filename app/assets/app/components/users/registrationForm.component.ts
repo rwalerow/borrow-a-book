@@ -1,8 +1,8 @@
-import { Component, ElementRef } from 'angular2/core';
+import { Component, ElementRef } from '@angular/core';
 import { UserRegistration } from './userRegistrationModel';
-import { isBlank } from 'angular2/src/facade/lang';
-import { ControlGroup, FormBuilder, Validators, FORM_DIRECTIVES, Control } from 'angular2/common';
-import { ValidationError } from '../../utils/validationUtils';
+import { isBlank } from '@angular/compiler/src/facade/lang';
+import { ControlGroup, FormBuilder, Validators, FORM_DIRECTIVES, Control } from '@angular/common';
+import { ValidationError, Validations } from '../../utils/validationUtils';
 import * as i from 'immutable';
 
 
