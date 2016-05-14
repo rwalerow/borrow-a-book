@@ -61,6 +61,6 @@ class RegistrationController @Inject() (
 			.flatMap(_.headOption)
 			.map(isUniqueFunction(_))
 			.getOrElse(Future.successful(false))
-			.map(valid => Ok(Json.toJson(ValidUniqueResponse(valid))))
+			.map(valid => Ok(Json.toJson(ValidUniqueResponse(!valid))))
 	}
 }

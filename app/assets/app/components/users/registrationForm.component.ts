@@ -2,14 +2,19 @@ import { Component, ElementRef } from 'angular2/core';
 import { UserRegistration } from './userRegistrationModel';
 import { isBlank } from 'angular2/src/facade/lang';
 import { ControlGroup, FormBuilder, Validators, FORM_DIRECTIVES, Control } from 'angular2/common';
-import { ValidationError } from '../../utils/validationUtils';
+import { ValidationError, Validations } from '../../utils/validationUtils';
+import { Http, Response } from 'angular2/http';
+import { Observable } from 'rxjs/Observable';
 import * as i from 'immutable';
+import { ValidationService } from '../../service/validation.service';
+import 'rxjs/Rx';
 
 
 @Component({
 	selector: 'registration-form',
 	templateUrl: '/assets/templates/registrationForm.html',
 	directives: [FORM_DIRECTIVES],
+	// providers: [ValidationService],
 	styles: ['.input-field { margin-bottom: 40px; }']
 })
 export default class RegistrationForm {
@@ -19,13 +24,13 @@ export default class RegistrationForm {
 	registrationForm: ControlGroup;
 	submitted = false;
 
-	constructor(elementRef: ElementRef, fb: FormBuilder) {
+	constructor(public validationService: ValidationService, elementRef: ElementRef, fb: FormBuilder) {
 		let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
 		this.parseValidationErrors(errorsFronAttribute);
 		this.registrationForm = fb.group({
-			'login': ['', Validators.compose([Validators.required, this.validateMinimalLength(3)])],
-			'email': ['', Validators.compose([Validators.required, this.validateEmailForm])],
-			'password': ['', Validators.compose([Validators.required, this.validateMinimalLength(3)])],
+			'login': ['', Validators.compose([Validators.required, Validators.minLength(3)]), this.validateUniqueLogin()],
+			'email': ['', Validators.compose([Validators.required, Validations.validateEmailForm]), this.validationEmailUnique()],
+			'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])],
 			'passwordConfirm': ['', Validators.required ]
 		}, { validator: this.matchingPasswords('password', 'passwordConfirm')});
 	}
@@ -68,28 +73,19 @@ export default class RegistrationForm {
 		};
 	}
 
-	validateMinimalLength(length: number) {
+	validateUniqueLogin() {
 		return (control: Control) => {
-			if (control.value.length <= length) {
-				return {loginToShort: true};
-			}
+			let login = control.value;
+			return this.validationService.isLoginUnique(login);
 		};
 	}
 
-	validateLoginMinimalSize(control: Control) {
-		if (control.value.length <= 3) {
-			return {loginToShort: true};
-		}
+	validationEmailUnique() {
+		return (control: Control) => {
+			let email = control.value;
+			return this.validationService.isEmailUnique(email);
+		};
 	}
-
-	validateEmailForm(control: Control) {
-		let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-
-		if (control.value !== '' && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
-			return { incorrectEmailFormat: true };
-		}
-	}
-
 	/**
 	*	Validation error presentation
 	**/
@@ -102,18 +98,22 @@ export default class RegistrationForm {
 			result.add('required');
 		}
 
-		if (loginControl.hasError('loginToShort')) {
+		if (loginControl.hasError('minlength')) {
 			result.add('to short');
 		}
 
-		return 'Login is' + i.List(result).join(' and ');
+		if (loginControl.hasError('notUnique')) {
+			result.add('not unique');
+		}
+
+		return 'Login is ' + i.List(result).join(' and ');
 	}
 
 	passwordValidationErrors(): string {
 		let result: Set<string> = new Set<string>();
 		let passwordControl = this.registrationForm.find('password');
 
-		if (passwordControl.hasError('required')) {
+		if (passwordControl.hasError('minlength')) {
 			result.add('required');
 		}
 
@@ -149,6 +149,10 @@ export default class RegistrationForm {
 
 		if (emailControl.hasError('incorrectEmailFormat')) {
 			result.add('in incorrct form');
+		}
+
+		if (emailControl.hasError('notUnique')) {
+			result.add('not unique');
 		}
 
 		return 'Email is ' + i.List(result).join(' and ');

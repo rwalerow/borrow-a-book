@@ -17,7 +17,7 @@ object ValidationUtils {
 	case class ValidationError(field: String, errorCode: String)
 
 	implicit val respWrite: Writes[ValidUniqueResponse] =
-		( JsPath \ "unique").write[Boolean].contramap { (valid: ValidUniqueResponse) => valid.unique }
+		( JsPath \ "notUnique").write[Boolean].contramap { (valid: ValidUniqueResponse) => valid.unique }
 
 	def isStringNonEmpty(fieldValue: String, filedName: String): ValidationNel[ValidationError, String] = {
 		if(fieldValue.isEmpty)

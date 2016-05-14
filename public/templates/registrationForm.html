@@ -22,7 +22,6 @@
 			name="email"
 			type="text"
 			#email="ngForm"
-			[(ngModel)]="model.email"
 			[ngFormControl]="registrationForm.controls['email']"
 			[class.invalid]="(!email.valid && email.touched) || false"
 		/>
