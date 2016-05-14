@@ -113,7 +113,7 @@ export default class RegistrationForm {
 		let result: Set<string> = new Set<string>();
 		let passwordControl = this.registrationForm.find('password');
 
-		if (passwordControl.hasError('minlength')) {
+		if (passwordControl.hasError('required')) {
 			result.add('required');
 		}
 
