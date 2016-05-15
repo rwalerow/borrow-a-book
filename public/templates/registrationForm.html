@@ -10,7 +10,8 @@
 			type="text"
 			#login="ngForm"
 			[ngFormControl]="registrationForm.controls['login']"
-			[class.invalid]="(!login.valid && login.touched) || false"
+			[class.invalid]="((!login.valid && login.touched) || false) || (isFieldInvalid('userName'))"
+			(blur)="cleanFieldError('userName')"
 		/>
 		<label for="userName"
 			[attr.data-error]="loginValidationErrors()">
@@ -24,7 +25,8 @@
 			type="text"
 			#email="ngForm"
 			[ngFormControl]="registrationForm.controls['email']"
-			[class.invalid]="(!email.valid && email.touched) || false"
+			[class.invalid]="((!email.valid && email.touched) || false) || (isFieldInvalid('email'))"
+			(blur)="cleanFieldError('email')"
 		/>
 		<label
 			for="email"
@@ -40,7 +42,8 @@
 			type="password"
 			#password="ngForm"
 			[ngFormControl]="registrationForm.controls['password']"
-			[class.invalid]="(!password.valid && password.touched) || false"
+			[class.invalid]="((!password.valid && password.touched) || false) || (isFieldInvalid('password'))"
+			(blur)="cleanFieldError('password')"
 		/>
 		<label
 			for="password"
@@ -56,7 +59,8 @@
 			type="password"
 			#passConfirm="ngForm"
 			[ngFormControl]="registrationForm.controls['passwordConfirm']"
-			[class.invalid] = "(!passConfirm.valid && passConfirm.touched) || false"
+			[class.invalid] = "((!passConfirm.valid && passConfirm.touched) || false) || (isFieldInvalid('password_confirmation'))"
+			(blur)="cleanFieldError('password_confirmation')"
 		/>
 		<label
 			for="password_confirm"

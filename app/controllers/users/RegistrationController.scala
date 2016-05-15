@@ -24,7 +24,7 @@ class RegistrationController @Inject() (
 
 	def get = Action {
 		Logger.info("Hello robert")
-		Ok(views.html.users.registration(List(ValidationError("userName", "wtf test invalid name"))))
+		Ok(views.html.users.registration())
 	}
 
 	def post = Action.async { implicit request =>

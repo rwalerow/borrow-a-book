@@ -31,7 +31,7 @@ object UserForms {
 	val login_filed_name = "userName"
 	val email_filed_name = "email"
 	val password_filed_name = "password"
-	val password_confirmation_filed_name = "password_confir"
+	val password_confirmation_filed_name = "password_confirmation"
 
 	val registration_form_error = "form"
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef } from 'angular2/core';
+import { Component, ElementRef, OnInit, AfterViewChecked } from 'angular2/core';
 import { UserRegistration } from './userRegistrationModel';
 import { isBlank } from 'angular2/src/facade/lang';
 import { ControlGroup, FormBuilder, Validators, FORM_DIRECTIVES, Control } from 'angular2/common';
@@ -27,6 +27,7 @@ export default class RegistrationForm {
 	constructor(public validationService: ValidationService, elementRef: ElementRef, fb: FormBuilder) {
 		let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
 		this.parseValidationErrors(errorsFronAttribute);
+
 		this.registrationForm = fb.group({
 			'login': ['', Validators.compose([Validators.required, Validators.minLength(3)]), this.validateUniqueLogin()],
 			'email': ['', Validators.compose([Validators.required, Validations.validateEmailForm]), this.validationEmailUnique()],
@@ -63,6 +64,14 @@ export default class RegistrationForm {
 	*	Validation methods
 	**/
 
+	cleanFieldError(fieldName: string) {
+		let toRemove: i.Set<ValidationError> = this.validationErrors
+			.filter(error => error.field === fieldName)
+			.toSet();
+
+		this.validationErrors = this.validationErrors.subtract(toRemove);
+	}
+
 	matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
 		return (group: ControlGroup) => {
 			let passwordInput = group.controls[passwordKey];
@@ -91,6 +100,11 @@ export default class RegistrationForm {
 	**/
 
 	loginValidationErrors(): string {
+		// Initial form errors
+		if (this.isFieldInvalid('userName')) {
+			return 'Login is ' + this.initialErrors('userName');
+		}
+
 		let result: Set<string> = new Set<string>();
 		let loginControl = this.registrationForm.find('login');
 
@@ -109,7 +123,19 @@ export default class RegistrationForm {
 		return 'Login is ' + i.List(result).join(' and ');
 	}
 
+	initialErrors(fieldName: string): string {
+		return this.validationErrors
+			.filter(element => element.field === fieldName)
+			.map(element => element.errorMessage)
+			.join(', ');
+	}
+
 	passwordValidationErrors(): string {
+		// Initial form errors
+		if (this.isFieldInvalid('password')) {
+			return 'Password is ' + this.initialErrors('password');
+		}
+
 		let result: Set<string> = new Set<string>();
 		let passwordControl = this.registrationForm.find('password');
 
@@ -125,6 +151,11 @@ export default class RegistrationForm {
 	}
 
 	passwordConfirmationValidationErrors(): string {
+		// Initial form errors
+		if (this.isFieldInvalid('password_confirmation')) {
+			return 'Password confirmation ' + this.initialErrors('password_confirmation');
+		}
+
 		let result: Set<string> = new Set<string>();
 		let passConfControl = this.registrationForm.find('passwordConfirm');
 
@@ -140,6 +171,11 @@ export default class RegistrationForm {
 	}
 
 	emailValidationErrors(): string {
+		// Initial form errors
+		if (this.isFieldInvalid('email')) {
+			return 'Email is ' + this.initialErrors('email');
+		}
+
 		let result: Set<string> = new Set<string>();
 		let emailControl = this.registrationForm.find('email');
 
