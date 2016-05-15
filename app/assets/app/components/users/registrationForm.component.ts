@@ -36,17 +36,6 @@ export default class RegistrationForm {
 		}, { validator: this.matchingPasswords('password', 'passwordConfirm')});
 	}
 
-	onSubmit() {
-		this.submitted = true;
-	}
-
-	notEmpty(value) {
-		if (value) {
-			return true;
-		}
-		return false;
-	}
-
 	isFieldInvalid(fieldName: string) {
 		return this.validationErrors
 			.filter(e => e.field === fieldName)
