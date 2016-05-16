@@ -21,12 +21,14 @@ import ExecutionContext.Implicits.global
 /**
   * Created by robert on 30.03.16.
   */
-case class RegistrationForm(login: String
-							,email: String
-							,password: String
-							,passwordConfirmation: String)
+case class RegistrationForm(login: String = ""
+	,email: String = ""
+	,password: String = ""
+	,passwordConfirmation: String = "")
 
 object UserForms {
+
+	val EMPTY_FORM = RegistrationForm("","","","");
 
 	val login_filed_name = "userName"
 	val email_filed_name = "email"
@@ -47,6 +49,13 @@ object UserForms {
 			password_confirmation_filed_name -> nonEmptyText
 		)(RegistrationForm.apply)(RegistrationForm.unapply)
 	)
+
+	implicit val registrationFormWriter: Writes[RegistrationForm] = (
+		(JsPath \ "login").write[String] and
+		(JsPath \ "email").write[String] and
+		(JsPath \ "password").write[String] and
+		(JsPath \ "passwordConfirmation").write[String]
+	) (unlift(RegistrationForm.unapply))
 
 	implicit val validationErrorWriter: Writes[ValidationError] = (
 		(JsPath \ "field").write[String] and

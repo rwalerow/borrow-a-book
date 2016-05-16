@@ -3,7 +3,7 @@ import { ValidationError } from '../utils/validationUtils';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'assets/templates/first.html'
+    templateUrl: '/assets/templates/first.html'
 })
 export default class AppComponent {
 

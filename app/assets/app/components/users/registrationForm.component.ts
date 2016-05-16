@@ -25,12 +25,16 @@ export default class RegistrationForm {
 	submitted = false;
 
 	constructor(public validationService: ValidationService, elementRef: ElementRef, fb: FormBuilder) {
+		
 		let errorsFronAttribute = JSON.parse(elementRef.nativeElement.getAttribute('validation-errors'));
 		this.parseValidationErrors(errorsFronAttribute);
 
+		let initialModel = JSON.parse(elementRef.nativeElement.getAttribute('init-model'));
+
+		console.log(initialModel);
 		this.registrationForm = fb.group({
-			'login': ['', Validators.compose([Validators.required, Validators.minLength(3)]), this.validateUniqueLogin()],
-			'email': ['', Validators.compose([Validators.required, Validations.validateEmailForm]), this.validationEmailUnique()],
+			'login': [initialModel.login, Validators.compose([Validators.required, Validators.minLength(3)]), this.validateUniqueLogin()],
+			'email': [initialModel.email, Validators.compose([Validators.required, Validations.validateEmailForm]), this.validationEmailUnique()],
 			'password': ['', Validators.compose([Validators.required, Validators.minLength(3)])],
 			'passwordConfirm': ['', Validators.required ]
 		}, { validator: this.matchingPasswords('password', 'passwordConfirm')});

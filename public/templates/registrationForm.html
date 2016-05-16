@@ -13,7 +13,9 @@
 			[class.invalid]="((!login.valid && login.touched) || false) || (isFieldInvalid('userName'))"
 			(blur)="cleanFieldError('userName')"
 		/>
-		<label for="userName"
+		<label
+			for="userName"
+			[class.active]="login.value"
 			[attr.data-error]="loginValidationErrors()">
 			Login*
 		</label>
@@ -30,6 +32,7 @@
 		/>
 		<label
 			for="email"
+			[class.active]="email.value"
 			[attr.data-error]="emailValidationErrors()"
 		>
 			Email*
@@ -55,7 +58,7 @@
 
 	<div class="row input-field">
 		<input
-			name="password_confirm"
+			name="password_confirmation"
 			type="password"
 			#passConfirm="ngForm"
 			[ngFormControl]="registrationForm.controls['passwordConfirm']"
@@ -63,7 +66,7 @@
 			(blur)="cleanFieldError('password_confirmation')"
 		/>
 		<label
-			for="password_confirm"
+			for="password_confirmation"
 			[attr.data-error]="passwordConfirmationValidationErrors()"
 		>
 			Password Confirmation*

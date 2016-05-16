@@ -24,7 +24,7 @@ class RegistrationController @Inject() (
 
 	def get = Action {
 		Logger.info("Hello robert")
-		Ok(views.html.users.registration())
+		Ok(views.html.users.registration(model = RegistrationForm(login = "robcio")))
 	}
 
 	def post = Action.async { implicit request =>
@@ -33,15 +33,19 @@ class RegistrationController @Inject() (
 
 		UserForms.registrationform.bindFromRequest.fold(
 			form => {
-				Logger.info(form.toString)
-				Future.successful(Ok(views.html.users.registration()))
+				val regForm = form.value.getOrElse(RegistrationForm())
+				val validationerrors = form.errors
+				    .map(error => ValidationError(error.key, error.message))
+					.toList
+				Future.successful(Ok(views.html.users.registration(model = regForm, error = validationerrors)))
 			},
 			data => {
-				Logger.info(data.toString)
 				registrationFormValidator.validate(data).map( validationResult =>
 					validationResult.fold(
-						error => Ok(views.html.users.registration()),
-						result => Ok(views.html.index("app"))
+						error => {
+							Ok(views.html.users.registration(model = data, error = error.list))
+						},
+						result => Redirect(controllers.routes.Application.index)
 					)
 				);
 			}
