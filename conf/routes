@@ -14,3 +14,5 @@ GET		/node_modules/*file				controllers.general.AssetsController.serveNodeFiles(
 
 GET		/validation/users/isLoginUnique.html		controllers.users.RegistrationController.validateLoginUnique
 GET		/validation/users/isEmailUnique.html		controllers.users.RegistrationController.validateEmailUnique
+
+GET     /react-first.html               controllers.Application.firstReact

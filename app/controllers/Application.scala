@@ -16,4 +16,8 @@ class Application @Inject() (val messagesApi: MessagesApi) extends Controller wi
 	def materializeDemo = Action {
 		Ok(views.html.materialize("a"))
 	}
+
+	def firstReact = Action {
+		Ok(views.html.react.reactFirst("My forst react application"))
+	}
 }
